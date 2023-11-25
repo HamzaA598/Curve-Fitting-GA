@@ -1,19 +1,20 @@
 import numpy as np
 import random
+import math
 
 POP_SIZE = 8
-K = 0.2*POP_SIZE
+K = math.ceil(0.2*POP_SIZE)
 LOWER_BOUND = -10
 UPPER_BOUND = 10
 Pc = 0.7
 Pm = 0.01
 
+# utility functions used for calculating fitness value of chromosome
 def mean_square_error(chromosome, x, y):
     predicted_values = evaluate_polynomial(chromosome, x)
     squared_errors = (predicted_values - y) ** 2
     mse = np.mean(squared_errors)
     return mse
-
 
 def evaluate_polynomial(chromosome, x):
     return np.polyval(chromosome, x)
@@ -39,8 +40,20 @@ def fitness(population, x, y):
 
 # inputs: population, fitness_values, size of tournament?
 # output: selected parents
-def select():
-    pass
+def select(population, fitness_values, tournament_size=2):
+    selection_size = POP_SIZE - K
+    selected_parents = np.empty([selection_size, population.shape[1]])
+    for i in range(selection_size):
+        tournament_indices = np.random.choice(POP_SIZE, size=tournament_size, replace=True)
+        
+        # this line is equivalent to
+        # tournament_fitness = [fitness_values[i] for i in tournament_indices]
+        # where it gets the fitness values for the indices selected for tournament
+        tournament_fitness = fitness_values[tournament_indices]
+
+        winner_index = tournament_indices[np.argmax(tournament_fitness)]
+        selected_parents[i] = population[winner_index]
+    return selected_parents
 
 # inputs: selected parents
 # output: intermediate generation of parents and children
