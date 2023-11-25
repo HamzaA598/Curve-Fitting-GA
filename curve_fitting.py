@@ -21,6 +21,8 @@ def main():
                 x[i] = float(line[0])
                 y[i] = float(line[1])
 
+            # 500-1000
+            MAX_GENERATIONS = 500 + degree * 50
             
             population = initialize(degree)
             
@@ -33,7 +35,7 @@ def main():
                 selected_parents = select(population, fitness_vals)
                 new_population = crossover(selected_parents)
                 mutated_population = mutate(new_population, t + 1, MAX_GENERATIONS)
-                population, elite = replace(mutated_population, elite)
+                population, elite = replace(mutated_population, elite, x, y)
             
             fitness_vals = fitness(population, x, y)
             best_index = np.argmax(fitness_vals)

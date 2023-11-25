@@ -1,11 +1,11 @@
 import numpy as np
 import random
 
-POP_SIZE = 8
+POP_SIZE = 64
 
 # number of chromosomes that will enter each generation
 K = (8*POP_SIZE)//10
-K += 1 if K%2 == 1 else 0
+K -= 1 if K%2 == 1 else 0
 
 LOWER_BOUND = -10
 UPPER_BOUND = 10
@@ -44,9 +44,8 @@ def fitness(population, x, y):
 # inputs: population, fitness_values, size of tournament?
 # output: selected parents
 def select(population, fitness_values, tournament_size=2):
-    selection_size = POP_SIZE - K
-    selected_parents = np.empty([selection_size, population.shape[1]])
-    for i in range(selection_size):
+    selected_parents = np.empty([K, population.shape[1]])
+    for i in range(K):
         tournament_indices = np.random.choice(POP_SIZE, size=tournament_size, replace=True)
         
         # this line is equivalent to
@@ -83,7 +82,7 @@ def crossover(parents):
 # output: mutated generation
 def mutate(intermediate_population, t, T):
     # dependency factor
-    b = 1
+    b = 2
 
     for chromosome in intermediate_population:
         for j, gene in enumerate(chromosome):
@@ -105,9 +104,10 @@ def mutate(intermediate_population, t, T):
 # inputs: mutated generation, old generation and their fitness_values
 # output: new population with elitism replacment
 # combines the elite members with the offspring
-def replace(elite, mutated_population):
+def replace(mutated_population, elite, x, y):
     new_generation = np.concatenate((elite, mutated_population))
-    new_generation.sort()
-    new_elite = np.copy(new_generation[:POP_SIZE - K])
+    fitness_values = fitness(new_generation, x, y)
+    elite_indices = np.argsort(fitness_values)[-(POP_SIZE-K):]
+    new_elite = new_generation[elite_indices]
     return new_generation, new_elite
 
