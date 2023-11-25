@@ -1,11 +1,12 @@
 import numpy as np
 import random
-import math
 
-MAX_GENERATIONS = 100
 POP_SIZE = 8
+
 # number of chromosomes that will enter each generation
-K = math.floor(0.8*POP_SIZE)
+K = (8*POP_SIZE)//10
+K += 1 if K%2 == 1 else 0
+
 LOWER_BOUND = -10
 UPPER_BOUND = 10
 Pc = 0.7
@@ -105,6 +106,8 @@ def mutate(intermediate_population, t, T):
 # output: new population with elitism replacment
 # combines the elite members with the offspring
 def replace(elite, mutated_population):
-    new_generation = np.concatenate(elite, mutated_population)
+    new_generation = np.concatenate((elite, mutated_population))
     new_generation.sort()
-    
+    new_elite = np.copy(new_generation[:POP_SIZE - K])
+    return new_generation, new_elite
+
