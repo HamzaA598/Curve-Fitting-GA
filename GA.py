@@ -83,7 +83,7 @@ def mutate(intermediate_population, t, T):
     b = 1
 
     for chromosome in intermediate_population:
-        for gene in chromosome:
+        for j, gene in enumerate(chromosome):
             Pmi = random.random()
             if Pmi > Pm:
                 continue
@@ -93,7 +93,8 @@ def mutate(intermediate_population, t, T):
             y = gene - LOWER_BOUND if r1 <= 0.5 else UPPER_BOUND - gene
             r2 = random.random()
             delta_t_y = y*(1-r2**((1-t/T)**b))
-            gene = gene - delta_t_y if r1 <= 0.5 else gene + delta_t_y
+            chromosome[j] = gene - delta_t_y if r1 <= 0.5 else gene + delta_t_y
+
             
     return intermediate_population
 
