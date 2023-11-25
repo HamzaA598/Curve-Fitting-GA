@@ -106,4 +106,5 @@ def mutate(intermediate_population, t, T):
 def replace(elite, mutated_population):
     new_generation = np.concatenate(elite, mutated_population)
     new_generation.sort()
-    
+    new_elite = np.copy(new_generation[:2])
+    return new_elite, new_generation
