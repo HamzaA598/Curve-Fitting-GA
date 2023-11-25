@@ -1,9 +1,23 @@
 import numpy as np
+import random
 
 POP_SIZE = 8
 K = 0.2*POP_SIZE
 LOWER_BOUND = -10
 UPPER_BOUND = 10
+Pc = 0.7
+Pm = 0.01
+
+def mean_square_error(chromosome, x, y):
+    predicted_values = evaluate_polynomial(chromosome, x)
+    squared_errors = (predicted_values - y) ** 2
+    mse = np.mean(squared_errors)
+    return mse
+
+
+def evaluate_polynomial(chromosome, x):
+    return np.polyval(chromosome, x)
+
 
 # inputs: chromosome length
 # output: (list/2d numpy array) of numpy arrays where each inner array is
@@ -23,19 +37,9 @@ def fitness(population, x, y):
     return fitness_values
 
 
-def mean_square_error(chromosome, x, y):
-    predicted_values = evaluate_polynomial(chromosome, x)
-    squared_errors = (predicted_values - y) ** 2
-    mse = np.mean(squared_errors)
-    return mse
-
-
-def evaluate_polynomial(chromosome, x):
-    return np.polyval(chromosome, x)
-
 # inputs: population, fitness_values, size of tournament?
 # output: selected parents
-def selection():
+def select():
     pass
 
 # inputs: selected parents
@@ -45,10 +49,28 @@ def crossover():
 
 # inputs: intermediate generation of parents and children
 # output: mutated generation
-def mutation(intermediate_population, current_generation_no, max_generations):
-    pass
+def mutate(intermediate_population, t, T):
+    # dependency factor
+    b = 1
+
+    for chromosome in intermediate_population:
+        for gene in chromosome:
+            Pmi = random.random()
+            if Pmi > Pm:
+                continue
+
+            r1 = random.random()
+            #calculating delta
+            y = gene - LOWER_BOUND if r1 <= 0.5 else UPPER_BOUND - gene
+            r2 = random.random()
+            delta_t_y = y*(1-r2**((1-t/T)**b))
+            gene = gene - delta_t_y if r1 <= 0.5 else gene + delta_t_y
+            
+    return intermediate_population
+
 
 # inputs: mutated generation, old generation and their fitness_values
 # output: new population with elitism replacment
-def replacment():
+# combines the elite members with the offspring
+def replace():
     pass
