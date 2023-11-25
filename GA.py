@@ -2,16 +2,14 @@ import numpy as np
 
 POP_SIZE = 8
 K = 0.2*POP_SIZE
+LOWER_BOUND = -10
+UPPER_BOUND = 10
 
 # inputs: chromosome length
 # output: (list/2d numpy array) of numpy arrays where each inner array is
 # a chromosome (coeffieicents)
 def initialize(chromosome_length):
-
-    initial_population = np.empty((POP_SIZE, chromosome_length))
-    for i in range(POP_SIZE):
-        initial_population[i, :] = np.random.rand(chromosome_length);
-    
+    initial_population = np.random.uniform(LOWER_BOUND, UPPER_BOUND, size=(POP_SIZE, chromosome_length))
     return initial_population
 
 # inputs: population, data pojnts
@@ -31,7 +29,7 @@ def crossover():
 
 # inputs: intermediate generation of parents and children
 # output: mutated generation
-def mutation():
+def mutation(intermediate_population, current_generation_no, max_generations):
     pass
 
 # inputs: mutated generation, old generation and their fitness_values
