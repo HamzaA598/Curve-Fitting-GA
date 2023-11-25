@@ -37,7 +37,7 @@ def main():
             fitness_vals = fitness(population, x, y)
             best_index = np.argmax(fitness_vals)
             best_individual = population[best_index]
-            mse = mean_square_error(best_individual, x, y)
+            mse = -fitness_vals[best_index]
             
             print("dataset index: ", t + 1)
             print(best_individual)
