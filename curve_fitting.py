@@ -2,6 +2,7 @@ import sys
 import numpy as np
 from GA import *
 
+MAX_GENERATIONS = 100
 
 def main():
     with open("input.txt", "r") as sys.stdin, \
