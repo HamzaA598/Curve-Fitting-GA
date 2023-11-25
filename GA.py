@@ -57,8 +57,24 @@ def select(population, fitness_values, tournament_size=2):
 
 # inputs: selected parents
 # output: intermediate generation of parents and children
-def crossover():
-    pass
+def crossover(parents):
+    children = np.empty(parents.shape)
+
+    for i in range(0, len(parents), 2):
+        parent1, parent2 = parents[i], parents[i + 1]
+
+        if random.random() <= Pc:
+            # select two points for crossover and sort them
+            point1, point2 = sorted(np.random.choice(len(parent1), size=2, replace=False))
+
+            children[i] = np.concatenate((parent1[:point1], parent2[point1:point2], parent1[point2:]))
+            children[i + 1] = np.concatenate((parent2[:point1], parent1[point1:point2], parent2[point2:]))
+
+        else:
+            children[i] = parent1.copy()
+            children[i + 1] = parent2.copy()
+
+    return children
 
 # inputs: intermediate generation of parents and children
 # output: mutated generation
