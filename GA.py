@@ -3,7 +3,8 @@ import random
 import math
 
 POP_SIZE = 8
-K = math.ceil(0.2*POP_SIZE)
+# number of chromosomes that will enter each generation
+K = math.ceil(0.8*POP_SIZE)
 LOWER_BOUND = -10
 UPPER_BOUND = 10
 Pc = 0.7
@@ -102,5 +103,7 @@ def mutate(intermediate_population, t, T):
 # inputs: mutated generation, old generation and their fitness_values
 # output: new population with elitism replacment
 # combines the elite members with the offspring
-def replace():
-    pass
+def replace(elite, mutated_population):
+    new_generation = np.concatenate(elite, mutated_population)
+    new_generation.sort()
+    
