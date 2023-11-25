@@ -2,9 +2,10 @@ import numpy as np
 import random
 import math
 
+MAX_GENERATIONS = 100
 POP_SIZE = 8
 # number of chromosomes that will enter each generation
-K = math.ceil(0.8*POP_SIZE)
+K = math.floor(0.8*POP_SIZE)
 LOWER_BOUND = -10
 UPPER_BOUND = 10
 Pc = 0.7
