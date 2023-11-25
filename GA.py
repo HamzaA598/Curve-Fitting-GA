@@ -32,7 +32,7 @@ def initialize(chromosome_length):
 # inputs: population, data pojnts
 # ouput: (list/numpy array) of fitness_values
 def fitness(population, x, y):
-    fitness_values = np.empty([POP_SIZE, 1])
+    fitness_values = np.empty([POP_SIZE])
     for i in range(POP_SIZE):
         chromosome = population[i]
         # Negative so we can maximize the fitness values
