@@ -14,8 +14,24 @@ def initialize(chromosome_length):
 
 # inputs: population, data pojnts
 # ouput: (list/numpy array) of fitness_values
-def fitness():
-    pass
+def fitness(population, x, y):
+    fitness_values = np.empty([POP_SIZE, 1])
+    for i in range(POP_SIZE):
+        chromosome = population[i]
+        # Negative so we can maximize the fitness values
+        fitness_values[i] = -mean_square_error(chromosome, x, y)
+    return fitness_values
+
+
+def mean_square_error(chromosome, x, y):
+    predicted_values = evaluate_polynomial(chromosome, x)
+    squared_errors = (predicted_values - y) ** 2
+    mse = np.mean(squared_errors)
+    return mse
+
+
+def evaluate_polynomial(chromosome, x):
+    return np.polyval(chromosome, x)
 
 # inputs: population, fitness_values, size of tournament?
 # output: selected parents
